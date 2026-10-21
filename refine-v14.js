@@ -1,7 +1,7 @@
 /* Each visit is a new story run. Only deliberate content edits persist. */
 let runStartedV14=Date.now();
 phoneDate=function(){return new Date(new Date(2026,9,23,1,0,0).getTime()+Date.now()-runStartedV14)};
-const runMessageTextsV14=new Set([storyMessage,'어땠어?','잘 자 엽아 ㅎㅎ','사랑해 내일 봐','어땠어?\n잘 자 엽아 이따 봐','ㅋㅋㅋㅋ잘 자 엽아. 이따 봐','엽아 잤어? 나 잠깐 전화했는데','바쁘면 이따 해도 돼ㅋㅋ 나 아직 안 자']);
+const runMessageTextsV14=new Set([storyMessage,'형 잠이 안 온당... 전화 가능해?','어땠어?','잘 자 엽아 ㅎㅎ','사랑해 내일 봐','어땠어?\n잘 자 엽아 이따 봐','ㅋㅋㅋㅋ잘 자 엽아. 이따 봐','엽아 잤어? 나 잠깐 전화했는데','바쁘면 이따 해도 돼ㅋㅋ 나 아직 안 자']);
 let chatBaselineV14=readStore('chat-baseline-v14',null);
 if(!chatBaselineV14){chatBaselineV14=structuredClone(chats);const rows=chatBaselineV14.yechan||[],first=rows.findIndex(m=>m[1]===storyMessage);chatBaselineV14.yechan=(first>=0?rows.slice(0,first):rows).filter(m=>!runMessageTextsV14.has(m[1]));saveStore('chat-baseline-v14',chatBaselineV14)}
 const saveBeforeV14=saveStore;
