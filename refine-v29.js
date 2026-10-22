@@ -3,16 +3,18 @@ const extrasV29=readStore('little-extras-v29',{reactions:{},draft:'',released:[]
 extrasV29.reactions??={};extrasV29.released??=[];
 function saveExtrasV29(){saveStore('little-extras-v29',extrasV29)}
 function scheduleLittleMessageV29(text,delay=3000,key='little29:'+Date.now()){
+ if((realtimeStateV22.dayCall||[]).some(e=>e.id===key))return;
  const event={dir:0,text,ms:nextFreeTimeV25(Date.now()+delay),id:key};
  (realtimeStateV22.dayCall||(realtimeStateV22.dayCall=[])).push(event);persistRealtimeV22();
  setTimeout(()=>deliverDayCallV24(Date.now()),Math.max(0,event.ms-Date.now()));
 }
 // A genuine reload gets one direct incoming call, without replaying the intro chat.
+let refreshTimerV29=null;
 let refreshPendingV29=performance.getEntriesByType('navigation')[0]?.type==='reload',refreshRingingV29=false,refreshConnectedV29=false,refreshStartedV29=0,refreshScheduledV29=false;
 function queueRefreshCallV29(){
  if(!refreshPendingV29||refreshScheduledV29)return;
  refreshScheduledV29=true;clearTimeout(storyCallTimer);storyStage='finished';persistRealtimeV22();
- setTimeout(()=>{refreshScheduledV29=false;if(!unlocked||callStage)return;refreshPendingV29=false;refreshRingingV29=true;incomingBeforeV23();},3000);
+ refreshTimerV29=setTimeout(()=>{refreshTimerV29=null;refreshScheduledV29=false;if(!unlocked||document.hidden||callStage)return;refreshPendingV29=false;refreshRingingV29=true;refreshStartedV29=Date.now();incomingBeforeV23();},3000);
 }
 const queueBeforeV29=queueIncomingCall;
 queueIncomingCall=function(){if(refreshPendingV29){queueRefreshCallV29();return}return queueBeforeV29()};
@@ -22,14 +24,16 @@ const showBeforeV29=showIncomingCall;
 showIncomingCall=function(){if(refreshPendingV29||refreshRingingV29||refreshConnectedV29)return;return showBeforeV29()};
 const acceptBeforeV29=acceptIncoming;
 acceptIncoming=function(){
- if(!refreshRingingV29)return acceptBeforeV29();
+ if(!refreshRingingV29){if(callStage!=='ringing')return;return acceptBeforeV29()}
+ if(callStage!=='ringing')return;
  refreshRingingV29=false;refreshConnectedV29=true;refreshStartedV29=Date.now();storyStage='calling';
  callSong.src=firstCallAudioV23;incomingDayCallV24=false;acceptBeforeV23();
 };
 function finishRefreshCallV29(type='수신'){
+ if(!refreshRingingV29&&!refreshConnectedV29)return;
  clearCallTimers();callSong.pause();callSong.currentTime=0;
  const started=refreshStartedV29||Date.now();
- callLog.unshift({id:'yechan',type,time:realtimeTimeV22(started),seconds:refreshConnectedV29?callElapsed:0,startedAt:started,date:realtimeDateLabelV22(started),...(refreshConnectedV29?{recordId:'refresh29:'+started,audioSrc:firstCallAudioV23}:{})});
+ callLog.unshift({id:'yechan',type,time:realtimeTimeV22(started),seconds:refreshConnectedV29?Math.max(0,Math.floor((Date.now()-started)/1000)):0,startedAt:started,date:realtimeDateLabelV22(started),...(refreshConnectedV29?{recordId:'refresh29:'+started,audioSrc:firstCallAudioV23}:{})});
  saveStore('call-log',callLog);refreshRingingV29=false;refreshConnectedV29=false;refreshStartedV29=0;callStage=null;storyStage='finished';overlay.innerHTML='';persistRealtimeV22();
 }
 for(const name of ['endIncomingCall','endCall','declineIncoming','finishOutgoingV13']){
@@ -66,7 +70,8 @@ const renderChatBeforeV29=renderChat;
 renderChat=function(...args){renderChatBeforeV29(...args);syncTypingV29();bindReactionsV29()};
 const sendBeforeV29=sendChat;
 sendChat=function(text){
- const id=activeChat,result=sendBeforeV29(text),pending=realtimeStateV22.pending?.[id];
+ const id=activeChat,before=chats[id]?.length||0,result=sendBeforeV29(text),pending=realtimeStateV22.pending?.[id];
+ if((chats[id]?.length||0)===before)return result;
  if(pending){pending.due=Date.now()+2200;persistRealtimeV22();setTimeout(()=>deliverPendingRepliesV22(Date.now()),2250)}
  syncTypingV29();return result;
 };
@@ -74,8 +79,9 @@ const pendingBeforeV29=deliverPendingRepliesV22;
 deliverPendingRepliesV22=function(now){
  for(const [id,p] of Object.entries(realtimeStateV22.pending||{})){
   if(p.due>now||p.text.length<20||contactBlockV23(p.due)||sleepingV23(p.due))continue;
+  if(p.splitV29)continue;
   const match=p.text.match(/^(.+?[.!?。]|.+?ㅎㅎ|.+?ㅋㅋ)\s+(.+)$/);
-  if(match){p.text=match[1];const e={dir:0,text:match[2],ms:p.due+1100,id:p.id+':tail29'};if(id==='yechan')(realtimeStateV22.dayCall||(realtimeStateV22.dayCall=[])).push(e);else p.text=match[0];}
+  if(match){p.splitV29=true;p.text=match[1];const e={dir:0,text:match[2],ms:p.due+1100,id:p.id+':tail29'};if(id==='yechan')(realtimeStateV22.dayCall||(realtimeStateV22.dayCall=[])).some(x=>x.id===e.id)||(realtimeStateV22.dayCall.push(e));else p.text=match[0];}
  }
  const result=pendingBeforeV29(now);syncTypingV29();return result;
 };
@@ -91,7 +97,7 @@ makeReply=function(id,text){const reply=replyBeforeV29(id,text);if(id==='yechan'
 const bubbleRenderBeforeV29=renderBubble;
 renderBubble=function(...args){bubbleRenderBeforeV29(...args);const input=$('#bubbleInput');if(input){input.value=extrasV29.draft||'';input.addEventListener('input',()=>{extrasV29.draft=input.value;saveExtrasV29()})}};
 const bubbleSendBeforeV29=sendBubble;
-sendBubble=function(...args){if(contactBlockV23())return bubbleSendBeforeV29(...args);extrasV29.draft='';saveExtrasV29();return bubbleSendBeforeV29(...args)};
+sendBubble=function(...args){if(contactBlockV23())return bubbleSendBeforeV29(...args);const before=bubble.length;const result=bubbleSendBeforeV29(...args);if(bubble.length>before){extrasV29.draft='';saveExtrasV29();const input=$('#bubbleInput');if(input)input.value=''}return result};
 // One selected track appears consistently on the lock screen and in quick settings.
 function selectedTrackV29(){return SONGS[readStore('selected-song-v29',-1)]||null}
 function syncTrackV29(){

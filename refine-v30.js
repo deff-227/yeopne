@@ -1,6 +1,6 @@
 /* Opening-day lock-screen label and gentle concert replies. */
 function concertDDayV30(){
- const d=phoneDate();if(d.getFullYear()!==2026||d.getMonth()!==9||d.getDate()!==23)return;
+ const d=phoneDate();if(d.getFullYear()!==2026||d.getMonth()!==9||d.getDate()!==23){surface.querySelector('#concertDDayV30')?.remove();return;}
  const group=surface.querySelector('.lock-clock-group');if(!group||surface.querySelector('#concertDDayV30'))return;
  const badge=document.createElement('div');badge.id='concertDDayV30';badge.className='concert-dday-v30';badge.textContent='콘서트 D-DAY';group.appendChild(badge);
 }
