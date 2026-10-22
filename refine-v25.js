@@ -122,4 +122,4 @@ chatAttachment=function(){attachmentBeforeV25();if(activeChat==='yechan')overlay
 function chooseRecordingV25(){
  collectionSheetV25('예찬이에게 녹음 보내기',RECORDINGS.map((r,i)=>r.src?`<button class="collection-item-v25" onclick="overlay.innerHTML='';shareRecordingToYechanV24(${i})"><b>${esc(r.name)}</b><small>${esc(r.length)}</small></button>`:'').join(''));
 }
-if(document.querySelector('meta[name="realtime-extension"]'))initializeRealtimeV22();else runFollowupsV25(Date.now());
+if(document.querySelector('meta[name="realtime-extension"]')?.content==='25')initializeRealtimeV22();else if(!document.querySelector('meta[name="realtime-extension"]'))runFollowupsV25(Date.now());
