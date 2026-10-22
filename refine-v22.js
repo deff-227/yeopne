@@ -195,5 +195,6 @@ window.addEventListener('storage',event=>{
 });
 // Heartbeat is local, lightweight cursor storage; hidden tabs do no scheduler work.
 setInterval(()=>{if(!document.hidden){advanceRealtimeV22(Date.now(),false);deliverPendingRepliesV22(Date.now());persistRealtimeV22()}},15000);
-advanceRealtimeV22(realtimeNowV22,true);deliverPendingRepliesV22(realtimeNowV22);persistRealtimeV22();updatePhoneClock();refreshUnreadBadges();
+function initializeRealtimeV22(){advanceRealtimeV22(realtimeNowV22,true);deliverPendingRepliesV22(realtimeNowV22);persistRealtimeV22();updatePhoneClock();refreshUnreadBadges()}
+if(!document.querySelector('meta[name="realtime-extension"]'))initializeRealtimeV22();
 setInterval(()=>updatePhoneClock(),1000);
