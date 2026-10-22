@@ -6,7 +6,7 @@ let chatBaselineV14=readStore('chat-baseline-v14',null);
 if(!chatBaselineV14){chatBaselineV14=structuredClone(chats);const rows=chatBaselineV14.yechan||[],first=rows.findIndex(m=>m[1]===storyMessage);chatBaselineV14.yechan=(first>=0?rows.slice(0,first):rows).filter(m=>!runMessageTextsV14.has(m[1]));saveStore('chat-baseline-v14',chatBaselineV14)}
 const saveBeforeV14=saveStore;
 saveStore=function(key,value){if(['chats','call-log','allRead','story-v3-seeded'].includes(key))return;saveBeforeV14(key,value)};
-localStorage.removeItem('yeop-chats');localStorage.removeItem('yeop-call-log');localStorage.removeItem('yeop-allRead');localStorage.removeItem('yeop-story-v3-seeded');
+// Real-time conversation snapshots are retained by refine-v22.
 chats=structuredClone(chatBaselineV14);callLog=[];savedRecentV5=readStore('call-baseline-v15',readStore('recent-history-v5',RECENT_SEED_V5));allRead=true;storyStage='locked';callStage=null;callQueued=false;clearTimeout(storyCallTimer);clearCallTimers();postCallMessageTimers.forEach(clearTimeout);postCallMessageTimers=[];
 queueIncomingCall=function(){if(storyStage!=='locked')return;runStartedV14=Date.now();storyStage='message';allRead=false;chats.yechan=(chats.yechan||[]).filter(m=>!runMessageTextsV14.has(m[1]));chats.yechan.push([0,storyMessage,'오전 1:00']);updatePhoneClock();refreshUnreadBadges();setTimeout(()=>{if(unlocked&&storyStage==='message')receiveBanner('yechan',storyMessage)},650)};
 const editorSaveBeforeV14=saveSiteEditorV5;
