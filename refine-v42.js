@@ -1,0 +1,13 @@
+/* Supplied October 24 bubble posts and October 23 selfie. */
+const bubblePostsV42=[['08:57','중콘 가보자구 !'],['09:48','소중한 중콘'],['11:02','[중콘 하늘 사진 v42]']];
+function importBubbleV42(now=Date.now()){
+ let changed=false;bubblePostsV42.forEach(([time,text],index)=>{const ms=Date.parse('2026-10-24T'+time+':00+09:00'),id='bubble42:'+index;if(ms<=now&&!bubble.some(row=>row[3]===id)){bubble.push([1,text,'오전 '+Number(time.split(':')[0])+':'+time.split(':')[1],id,ms]);changed=true}});
+ if(changed){bubble.sort((a,b)=>(a[4]||0)-(b[4]||0));saveStore('bubble',bubble)}return changed;
+}
+const importPostsBeforeV42=importPostsV32;
+importPostsV32=function(now=Date.now()){const result=importPostsBeforeV42(now);const added=importBubbleV42(now);return {...result,bubbleChanged:result.bubbleChanged||added}};
+function addSelfieV42(){if(readStore('selfie-imported-v42',false))return;const key='selfie-oct23-v42';if(!PHOTOS.some(p=>p[0]===key))PHOTOS.push([key,'첫콘 끝나고 셀카','10월 23일 오후 11:16']);let album=albumsV9.find(a=>a.id==='selfies');if(!album){album={id:'selfies',name:'셀카',photos:[]};albumsV9.push(album)}if(!album.photos.includes(key))album.photos.push(key);editsV7.photos=PHOTOS;persistV7();saveAlbumsV9();saveStore('selfie-imported-v42',true)}
+const renderBubbleBeforeV42=renderBubble;
+renderBubble=function(...args){importBubbleV42();const result=renderBubbleBeforeV42(...args);const rows=bubble.filter(row=>row[0]);surface.querySelectorAll('#bubbleScroll .artist-message,#bubbleScroll .artist-outgoing').forEach((el,index)=>{const row=rows[index],box=el.querySelector('.artist-bubble');if(!box)return;if(row?.[1]==='[첫콘 셀카 v32]'){box.classList.add('bubble-photo-v32');box.innerHTML='<div class="bubble-photo-frame-v32 raw-selfie-v42"><img src="assets/selfie-oct23-v42.jpg" alt="첫콘 끝나고 상엽이 셀카" loading="lazy"></div>'}if(row?.[1]==='[중콘 하늘 사진 v42]'){box.classList.add('bubble-photo-v32');box.innerHTML='<div class="bubble-sky-v42" role="img" aria-label="중콘 날 흐린 하늘과 나무 사진"><img src="assets/bubble-oct24-reference-v42.jpg" alt="" loading="lazy"></div>'}});return result};
+const styleV42=document.createElement('style');styleV42.textContent='.raw-selfie-v42{aspect-ratio:3/4}.raw-selfie-v42 img{position:static!important;width:100%!important;max-width:100%!important;height:auto!important;left:auto!important;top:auto!important}.bubble-sky-v42{width:100%;aspect-ratio:660/874;overflow:hidden;position:relative;border-radius:12px}.bubble-sky-v42 img{position:absolute!important;width:160%!important;max-width:none!important;height:auto!important;left:-22.88%;top:-97.25%;border-radius:0!important}';document.head.appendChild(styleV42);
+addSelfieV42();importBubbleV42();
