@@ -25,8 +25,7 @@ realtimeEventsV22=function(from,to){
     [9,15,'chat',0,'엽아 일어났어? 목은 좀 괜찮아? 어제 많이 불렀잖아'],[9,17,'chat',1,'응 괜찮아. 형도 손 안 아파? 오늘도 무리하지 말자'],
     [12,30,'chat',0,'중콘이라고 방심하지 말고 밥부터 먹자 ㅎㅎ'],[12,32,'chat',1,'알았어 형. 어제 좋았던 거 오늘도 같이 하자'],
     [w.start-2,0,'bubble',1,'어제 와준 왈왈이들 고마워요. 오늘도 재밌게 놀자 :)'],
-    [end,20,'chat',0,'엽아 오늘도 수고했어. 어제보다 더 편하게 웃으면서 한 것 같아'],[end,22,'chat',1,'형도 수고했어. 오늘 눈 마주칠 때마다 웃음 났다ㅋㅋ'],
-    [end,30,'bubble',1,'둘째 날도 정말 즐거웠다. 덕분에 힘 많이 받았어요. 내일 마지막까지 같이 놀자']
+    [end,20,'chat',0,'엽아 오늘도 수고했어. 어제보다 더 편하게 웃으면서 한 것 같아'],[end,22,'chat',1,'형도 수고했어. 오늘 눈 마주칠 때마다 웃음 났다ㅋㅋ']
    ]:[
     [9,15,'chat',0,'오늘이 벌써 마지막이네. 엽아 잘 잤어?'],[9,17,'chat',1,'응 형. 아직 끝나지도 않았는데 벌써 아쉽다'],
     [12,0,'chat',0,'우리 오늘도 다치지 말고 재밌게 하자. 끝나고 내가 꼭 안아줄게'],[12,2,'chat',1,'좋아. 형도 끝까지 내 옆에 있어줘'],
@@ -118,3 +117,19 @@ renderCalendar=function(...args){calendarBeforeV26(...args);const today=surface.
 selectedDay=phoneDate().getDate();
 if(realtimeStateV22.created===realtimeNowV22&&concertDayV26(realtimeNowV22))saveCursorV22(new Date(new Date(realtimeNowV22).setHours(0,0,0,0)).getTime());
 initializeRealtimeV22();
+
+// Remove the retired October 24 bubble post from saved histories without touching other posts.
+(function pruneRetiredBubblePostV26(){
+ const text="둘째 날도 정말 즐거웠다. 덕분에 힘 많이 받았어요. 내일 마지막까지 같이 놀자";
+ const id='weekend26:24:21:30:bubble';
+ const matches=row=>Array.isArray(row)&&(row[1]===text||row[3]===id);
+ if(bubble.some(matches)){
+  bubble=bubble.filter(row=>!matches(row));
+  saveStore('bubble',bubble);
+ }
+ const baseline=readStore('configured-baseline-v39',null);
+ if(Array.isArray(baseline?.bubble)&&baseline.bubble.some(matches)){
+  baseline.bubble=baseline.bubble.filter(row=>!matches(row));
+  saveStore('configured-baseline-v39',baseline);
+ }
+})();
