@@ -47,7 +47,7 @@ function importStoryCallsV37(now=Date.now()){
 }
 function unreadStoryCallsV37(){return callLog.filter(r=>r.storyEventV37&&!eventStateV37.read.includes(r.recordId)).sort((a,b)=>b.startedAt-a.startedAt)}
 function storyCallListV37(){
- importStoryCallsV37();collectionSheetV25('통화 기록',callLog.filter(r=>r.storyEventV37).sort((a,b)=>b.startedAt-a.startedAt).map(r=>`<button class="collection-item-v25" onclick="viewStoryCallV37('${esc(r.recordId)}')"><b>${esc(r.date)} · ${esc(r.time)}</b><span>${esc(CONTACTS[r.id]?.name||'예찬이형♥')}에게서 걸려온 전화</span><small>${esc(r.storyTitleV37)} · ${eventStateV37.read.includes(r.recordId)?'확인 완료':'미확인'}</small></button>`).join(''));
+ importStoryCallsV37();collectionSheetV25('통화 기록',callLog.filter(r=>r.storyEventV37).sort((a,b)=>b.startedAt-a.startedAt).map(r=>`<button class="collection-item-v25" onclick="viewStoryCallV37('${esc(r.recordId)}')"><b>${esc(r.date)} · ${esc(r.time)}</b><span>${r.type==='발신'?'최상엽 → ':''}${esc(CONTACTS[r.id]?.name||'예찬이형♥')}${r.type==='발신'?' · 발신':'에게서 걸려온 전화'}</span><small>${esc(r.storyTitleV37)} · ${eventStateV37.read.includes(r.recordId)?'확인 완료':'미확인'}</small></button>`).join(''));
 }
 let viewerV37=null,promptSignatureV37='',eligibleAtV37=0;
 function stopStoryViewerV37(){if(viewerV37){clearTimeout(viewerV37.timer);viewerV37=null}}
