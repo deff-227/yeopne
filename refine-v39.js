@@ -27,7 +27,7 @@ function saveBaselineV39(){
  const baseline=structuredClone(chats);
  for(const id of Object.keys(baseline))baseline[id]=baseline[id].filter(row=>!/^rt22:|^group32:|^story37:/.test(String(row[3]||'')));
  chatBaselineV14=baseline;saveBeforeV14('chat-baseline-v14',baseline);
- const artist=bubble.filter(row=>!/^bubble32:|^bubble-screenshot-|^rt22:/.test(String(row[3]||''))).map(row=>row.slice(0,3));
+ const artist=bubble.filter(row=>!/^bubble32:|^bubble42:|^bubble-screenshot-|^rt22:|^concert23:|^weekend26:/.test(String(row[3]||''))).map(row=>row.slice(0,3));
  saveStore('configured-baseline-v39',{bubble:artist,savedAt:Date.now()});saveStore('call-baseline-v15',savedRecentV5);toast('현재 기본 내용을 저장했습니다. 이후 리셋에도 유지됩니다.');overlay.innerHTML='';
 }
 function confirmBaselineV39(){collectionSheetV25('기본 내용으로 저장',`<p>현재 대화와 버블 내용을 리셋 후에도 남길 기본 내용으로 저장한다. 이후 사용자가 추가한 기록만 리셋된다.</p><button class="collection-item-v25" onclick="saveBaselineV39()">현재 내용을 기본으로 저장</button><button class="collection-item-v25" onclick="overlay.innerHTML=''">취소</button>`)}
