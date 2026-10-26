@@ -27,5 +27,6 @@ syncQuickSongV44=function(){const q=overlay.querySelector('.quick-music-v27');if
 const videoCard=ytVideoCard;ytVideoCard=function(v){if(v.id!==video)return videoCard(v);return '<button class="yt-video" onclick="openYTVideo(\''+video+'\')"><span class="yt-thumbnail"><img src="https://i.ytimg.com/vi/'+video+'/hqdefault.jpg" alt="LUCY Ending 라이브클립" onerror="this.onerror=null;this.src=\'assets/stage.jpg\'"></span><span class="yt-video-info"><span><b>'+esc(v.title)+'</b><small>'+esc(v.sub)+'</small></span></span></button>'};
 const yt=renderYouTube;renderYouTube=function(tab='home'){const r=yt(tab);if(tab==='home'){const c=surface.querySelector('.app-content'),card=c?.querySelector('.yt-video');if(card)c.prepend(card)}return r};
 const clock=updatePhoneClock;updatePhoneClock=function(...a){const r=clock(...a);const right=document.querySelector('.right-note');if(right){const p=right.querySelector('p');if(p)p.innerHTML='다시 만날 걸 알아<br>그러니 우리 더 빛나자'}return r};
+const css=document.createElement('style');css.textContent='.right-note p{white-space:nowrap;font-size:22px;line-height:1.9;letter-spacing:-.5px}';document.head.appendChild(css);
 updatePhoneClock();
 })();
