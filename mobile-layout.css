@@ -1,0 +1,48 @@
+/* Mobile-only layout: use available width without stretching the display ratio. */
+@media(max-width:700px){
+html,body{margin:0;min-height:100%;width:100%;overflow-x:hidden}
+body{background:#263430}
+.scene{display:block!important;width:100%!important;min-height:100svh!important;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)!important;overflow:visible!important}
+.intro,.right-note,.under-device,.side-key{display:none!important}
+.device-wrap{display:block!important;width:100%!important;padding:0!important;margin:0!important}
+#device,#device.folded-open{box-sizing:border-box;width:100%!important;max-width:100%!important;min-width:0!important;height:100svh!important;height:100dvh!important;min-height:480px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;transform:none!important;box-shadow:none!important}
+#device .screen{width:100%!important;height:100%!important;border-radius:0!important;min-height:0;overflow:hidden}
+#device #surface{inset:31px 0 42px!important;min-height:0}
+#device .system-nav{height:42px!important;bottom:0!important}
+#device .system-nav button{height:42px!important}
+#device .home{padding-left:18px!important;padding-right:18px!important;min-height:0}
+#device .home-carousel{min-height:0}
+#device .home-page{box-sizing:border-box;min-width:0}
+#device .home-apps{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px 10px!important}
+#device .app-button{min-width:0}
+#device .home-apps .app-button{display:flex!important}
+#device .app-icon,#device .dock .app-icon{width:48px!important;height:48px!important}
+#device .app-label{font-size:10px!important}
+#device .home-top{margin-top:12px!important}
+#device .home .dots{flex-shrink:0;padding:5px 0!important}
+#device .dock{flex-shrink:0;padding-bottom:8px!important}
+#device .drawer-button{flex-shrink:0}
+#device .page-letter-v48{padding-top:10px!important}
+#device .letter-widget-v48{max-width:none;padding:20px 22px 15px}
+#device .letter-body-v48{font-size:13px;line-height:1.85}
+#device .app-view,#device .chat-room{min-width:0;min-height:0}
+#device .app-content,#device .chat-scroll{min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#device input,#device textarea,#device select{font-size:16px!important}
+#device .site-editor-v5{inset:10px!important}
+#device .quick-panel{padding-left:16px!important;padding-right:16px!important}
+#device .lock-time{font-size:82px!important}
+#device .keypad{max-width:280px;width:82%}
+}
+@media(max-width:700px) and (max-height:740px){
+#device .home-top{margin-top:4px!important}
+#device .weather-widget{height:108px!important;padding:11px!important}
+#device .date-widget,#device .schedule-widget{height:51px!important;padding:8px!important}
+#device .search-widget{margin:12px 0 16px!important;padding:9px 12px!important}
+#device .home-apps{row-gap:13px!important}
+#device .app-icon,#device .dock .app-icon{width:43px!important;height:43px!important}
+#device .letter-widget-v48 h3{font-size:21px;margin:16px 0 12px}
+#device .letter-body-v48{font-size:12px;line-height:1.75}
+}
+@media(max-width:700px) and (orientation:landscape){
+#device,#device.folded-open{min-height:600px!important}
+}
