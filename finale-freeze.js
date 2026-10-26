@@ -1,7 +1,7 @@
 /* Final story time; real timers remain active for user interactions. */
 (()=>{
 const cutoff=Date.parse('2026-10-26T00:00:00+09:00'),video='z8oLq_vcLZU';
-phoneDate=function(){return new Date(cutoff)};
+phoneDate=function(){return new Date(2026,9,26,0,0,0,0)};
 // Communication availability follows the frozen story, not the visitor's real hour.
 sleepingV23=function(){return false};
 contactBlockV23=function(){return ''};
