@@ -2,7 +2,6 @@
 (() => {
   'use strict';
   const finaleTimeV51 = Date.parse('2026-10-26T00:00:00+09:00');
-  const finaleDateV51 = new Date(finaleTimeV51);
   phoneDate = () => new Date(finaleTimeV51);
   phoneTime = () => '오전 12:00';
 
@@ -20,18 +19,6 @@
     document.querySelectorAll('.lock-date').forEach(el => { el.textContent = '10월 26일 월요일'; });
     const note = document.querySelector('.right-note > p');
     if (note) note.innerHTML = '그러니 우리 더 빛나자<br>이 순간이 영원할 것처럼';
-    return result;
-  };
-
-  const chatBeforeV51 = renderChat;
-  renderChat = function (...args) {
-    const result = chatBeforeV51(...args);
-    const date = phoneDate();
-    const label = `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${realtimeDaysV22[date.getDay()]}`;
-    const header = surface.querySelector('.chat-date');
-    if (header && activeChat === 'yechan') {
-      header.textContent = label + ' · 마지막 공연이 끝난 뒤';
-    }
     return result;
   };
 
